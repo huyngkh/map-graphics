@@ -7,14 +7,14 @@ import {Vector as VectorLayer} from 'ol/layer.js';
 import {OSM, Vector as VectorSource} from 'ol/source.js';
 
 import MapBoxGL from 'mapbox-gl';
-const MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiaHV5dm5uIiwiYSI6ImNqazB5aHJ1YjAxemszb3J3cjFiN2l5bGEifQ.mmwjuLqUODvJzh3DsL1qiA";
+const MAPBOX_ACCESS_TOKEN = "";
 const layers = [];
 
 // Mapbox
-var mapBox = new MapBoxGL.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v10'
-});
+// var mapBox = new MapBoxGL.Map({
+//     container: 'map',
+//     style: 'mapbox://styles/mapbox/streets-v10'
+// });
 
 // Open street map
 const OpenStreetMapLayer = new TileLayer({
@@ -42,7 +42,7 @@ var map = new Map({
     layers: layers,
     view: new View({
         center: [-11000000, 4600000],
-        zoom: 11
+        zoom: 10
     })
 });
 
