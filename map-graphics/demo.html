@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Anotation Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/app.css" type="text/css" />
+    <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" type="text/css" />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+  <header>
+    <p>User profile</p>
+  </header>
+
+  <section>
+    <nav>
+      <ul>
+        <li><a href="#">Hide/Show base map</a></li>
+        <li><a href="#">Add new layers</a></li>
+        <li><a href="#">Draw a polyline</a></li>
+        <li>
+          <select id="type">
+            <option value="Point">Point</option>
+            <option value="LineString">LineString</option>
+            <option value="Polygon">Polygon</option>
+            <option value="Circle">Circle</option>
+            <option value="None">None</option>
+          </select>
+        </li>
+      </ul>
+    </nav>
+    
+    <article>
+      <div id="map" class="map" />
+    </article>
+  </section>
+
+  <footer>
+    <p>Footer</p>
+  </footer>
+
+  <script src="./build/app.js"></script>
+</body>
+</html>

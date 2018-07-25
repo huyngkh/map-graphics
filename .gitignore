@@ -1,0 +1,12 @@
+# Compiled files
+/map-graphics/node_modules
+/map-graphics/build/app.js
+/map-graphics/npm-debug.log
+
+# Cached files
+/map-graphics/.DS_Store
+.DS_Store
+
+# IntelliJ
+*.iml
+/.idea

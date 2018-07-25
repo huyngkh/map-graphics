@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    image: map_app
+    container_name: map_app1
+    build: 
+      context: ./map-graphics
+    command: yarn run start
+    ports:
+      - 80:8080
+    volumes:
+      - ./map-graphics:/usr/app
+    environment:
+      API_URL: '"http://localhost:3001,http://212.47.235.77:3001"'
