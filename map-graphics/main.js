@@ -1,70 +1,35 @@
-import {Map, View} from 'ol';
-import TileLayer from 'ol/layer/Tile';
-import XYZ from 'ol/source/XYZ';
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+import ToolBox from './components/tools'
+import MapViewport from './components/map';
 
-import Draw from 'ol/interaction/Draw.js';
-import {Vector as VectorLayer} from 'ol/layer.js';
-import {OSM, Vector as VectorSource} from 'ol/source.js';
-
-import MapBoxGL from 'mapbox-gl';
-const MAPBOX_ACCESS_TOKEN = "";
-const layers = [];
-
-// Mapbox
-// var mapBox = new MapBoxGL.Map({
-//     container: 'map',
-//     style: 'mapbox://styles/mapbox/streets-v10'
-// });
-
-// Open street map
-const OpenStreetMapLayer = new TileLayer({
-    source: new XYZ({
-      url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    })
-  });
-// layers.push(OpenStreetMapLayer);
-
-// Draw layer
-var raster = new TileLayer({
-    source: new OSM()
-});
-layers.push(raster);
-
-var source = new VectorSource({wrapX: false});
-var vector = new VectorLayer({
-    source: source
- });
-layers.push(vector);
-
-// MAIN: Render the entire map
-var map = new Map({
-    target: 'map',
-    layers: layers,
-    view: new View({
-        center: [-11000000, 4600000],
-        zoom: 10
-    })
-});
-
-var typeSelect = document.getElementById('type');
-var draw; // global so we can remove it later
-function addInteraction() {
-    var value = typeSelect.value;
-    if (value !== 'None') {
-        draw = new Draw({
-        source: source,
-        type: typeSelect.value
-        });
-        map.addInteraction(draw);
+class App extends Component {
+    constructor(props) {
+        super(props);
     }
+
+    render() {
+        return (
+            <div>
+                <header>
+                    <p>User profile</p>
+                </header>
+
+                <section>
+                    <nav>
+                        <ToolBox />
+                    </nav>
+                    <article>
+                        <MapViewport />;
+                    </article>
+                </section>
+
+                <footer>
+                    <p>Footer</p>
+                </footer>
+            </div>
+        );
+    }    
 }
 
-/**
- * Handle change event.
- */
-typeSelect.onchange = function() {
-    map.removeInteraction(draw);
-    addInteraction();
-};
-
-addInteraction();
+ReactDOM.render(<App />, document.querySelector('.container'));

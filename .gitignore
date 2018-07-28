@@ -10,3 +10,6 @@
 # IntelliJ
 *.iml
 /.idea
+
+#Visual Studio Code
+*.code-workspace
