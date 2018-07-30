@@ -6,12 +6,12 @@
   "repository": "git@github.com:StephenGrider/ReduxSimpleStarter.git",
   "scripts": {
     "setup": "yarn install --check-files",
-    "build": "webpack --config ./config/webpack.config.js",
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080 --host 0.0.0.0 --config ./config/webpack.config.js",
+    "build": "webpack --config webpack.config.js",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080 --host 0.0.0.0 --config webpack.config.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },
-  "author": "",
+  "author": "Huy Nguyen",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.2.1",
@@ -27,5 +27,13 @@
     "ol": "^5.1.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1"
-  }
+  },
+  "engines": {
+    "node": "10.7.0"
+  },
+  "keywords": [
+    "map",
+    "graphics",
+	"openlayers"
+  ]
 }

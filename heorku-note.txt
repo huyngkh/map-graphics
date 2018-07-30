@@ -1,0 +1,18 @@
+1. git add & commit all changes
+
+2. Create an app within the folder including Dockerfile
+heroku create --app appName1
+
+Destroy an app
+heroku apps:destroy appName1
+
+3. Upload code to heroku
+git push heroku master
+
+Remove the old heroku remote
+	- git remote rm heroku
+and add the new one:
+	- git remote add heroku git@heroku.com:appName1
+
+4. Run a command on heroku	
+	heroku run bash

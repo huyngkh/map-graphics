@@ -9,9 +9,9 @@ module.exports = {
     poll: 5000
   },
   output: {
-    path: path.resolve(__dirname, '../build/'),
+    path: path.resolve(__dirname, '/dist/'),
     filename: 'app.js',
-    publicPath: '../build/'
+    publicPath: '/dist/'
   },
   module: {
     loaders: [

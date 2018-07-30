@@ -16,9 +16,3 @@ COPY . .
 
 # CHeck info
 RUN ls -al
-
-# Build project
-ENTRYPOINT webpack --config webpack.config.js
-
-# Run it
-CMD node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080 --host 0.0.0.0 --config webpack.config.js

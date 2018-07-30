@@ -22,6 +22,7 @@ class ToolBox extends Component {
                 </li>
                 <li>
                     <button id="btn-draw" className="control-button" >Draw</button>
+                    <button id="btn-move" className="control-button" >Move</button>
                 </li>
             </ul>
         );
