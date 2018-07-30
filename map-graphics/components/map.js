@@ -30,7 +30,7 @@ class MapViewPort extends Component {
         var chicago = [-87.61694, 41.86625];
         var sanjose = [-121.9236057, 37.261241];
 
-        var mapManager = this.createMap('map', chicago, 17, 19);
+        var mapManager = this.createMap('map', sanjose, 17, 19);
         this.initMap(mapManager);
     }
 
@@ -72,10 +72,18 @@ class MapViewPort extends Component {
     initMap(mapManager) {
         const layers = [];
     
+        // Layer: A custom map
+        const aMapLayer = new TileLayer({
+            source: new XYZ({
+                url: 'http://ec2-52-27-92-51.us-west-2.compute.amazonaws.com:5002/{z}/{x}/{y}.png'
+            })
+        });
+        mapManager.map.addLayer(aMapLayer);
+
         // Layer: Open street map
         const openStreetMapLayer = new TileLayer({
             source: new XYZ({
-            url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             })
         });
         // mapManager.map.addLayer(openStreetMapLayer);
@@ -84,13 +92,13 @@ class MapViewPort extends Component {
         var raster = new TileLayer({
             source: new OSM()
         });
-        mapManager.map.addLayer(raster);
+        // mapManager.map.addLayer(raster);
     
         // https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=<your access token here>'
         // Layer: Mapbox
         const mapbox = new TileLayer({
             source: new XYZ({
-            url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=' + MAPBOX_ACCESS_TOKEN
+                url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=' + MAPBOX_ACCESS_TOKEN
             })
         });
         // mapManager.map.addLayer(mapbox);
@@ -123,11 +131,14 @@ class MapViewPort extends Component {
             mapManager.map.removeInteraction(draw);
             addInteraction();
         };
-    
+        addInteraction();
+
+        /**
+         * Handle Draw button event
+         */
         document.getElementById('btn-draw').onclick = () => {
             this.moveViewport(mapManager.view, [-121.9236057, 37.261241], 3000);
         }
-        addInteraction();
     }
 }
 

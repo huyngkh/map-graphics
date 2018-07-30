@@ -3,6 +3,11 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: './main.js',
+  watch: false,
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 5000
+  },
   output: {
     path: path.resolve(__dirname, '../build/'),
     filename: 'app.js',
