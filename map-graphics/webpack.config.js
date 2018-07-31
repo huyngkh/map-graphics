@@ -9,9 +9,9 @@ module.exports = {
     poll: 5000
   },
   output: {
-    path: path.resolve(__dirname, '/dist/'),
+    path: path.resolve(__dirname, 'dist/'),
     filename: 'app.js',
-    publicPath: '/dist/'
+    publicPath: 'dist/'
   },
   module: {
     loaders: [
@@ -19,7 +19,8 @@ module.exports = {
             test: /\.js$/,
             loader: 'babel-loader',
             query: {
-                presets: ['react', 'es2015']
+                presets: ['react', 'es2015'],
+                compact: false
             }
         }
     ]

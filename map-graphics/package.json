@@ -6,10 +6,11 @@
   "repository": "git@github.com:StephenGrider/ReduxSimpleStarter.git",
   "scripts": {
     "setup": "yarn install --check-files",
-    "build": "webpack --config webpack.config.js",
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8080 --host 0.0.0.0 --config webpack.config.js",
+    "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.config.js --port 8080 --host 0.0.0.0",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "build": "webpack --config webpack.config.js",
+    "heroku-postbuild": "webpack --config webpack.config.js"
   },
   "author": "Huy Nguyen",
   "license": "ISC",

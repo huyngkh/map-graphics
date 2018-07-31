@@ -1,12 +1,14 @@
-1. git add & commit all changes
+0. Move to the root folder that has Dockerfile
 
-2. Create an app within the folder including Dockerfile
+1. Create an app
 heroku create --app appName1
 
 Destroy an app
 heroku apps:destroy appName1
 
-3. Upload code to heroku
+2. git add & commit all changes
+
+3. Upload code to heroku remote repository
 git push heroku master
 
 Remove the old heroku remote
@@ -15,4 +17,21 @@ and add the new one:
 	- git remote add heroku git@heroku.com:appName1
 
 4. Run a command on heroku	
-	heroku run bash
+heroku run bash
+
+5. Configuration
+- Heroku loading the scripts following the order:
+o heroku-postbuild in package.json
+=> The field defines a script that is executed right after the build process done.
+o Procfile
+	Example:
+	web: node server.js
+=> default service is web. The command stands after the colon is ENTRYPOINT of the server
+
+6. Check logs
+heroku logs [params]
+params:
+--source app : investigate app errors only
+-- tail: to view log in live time
+
+Example: heroku logs --source app --tail

@@ -88,8 +88,6 @@ class MapViewPort extends Component {
         //         url: 'http://ec2-52-27-92-51.us-west-2.compute.amazonaws.com:5002/{z}/{x}/{y}.png'
         //     })
         // });
-        var tms_resolutions_3857_tynset = [5.8135986328125, 2.90679931640625, 1.45339965820313, 0.726699829101563, 0.363349914550781, 0.181674957275391, 0.0908374786376953, 0.0454187393188477];
-        var extent_3857_tynset = [1199098.1904393, 8923848.54918488, 1199956.06726346, 8924597.49205864];
         const aMapLayer = new TileLayer({
             // style: simpleStyle,
             source: new TileImage({
