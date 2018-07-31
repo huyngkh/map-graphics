@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 
-import {Map, View} from 'ol';
+import _ol, {Map, View, Projection, Collection} from 'ol';
 import {XYZ, TileImage} from 'ol/source';
-import TileLayer from 'ol/layer/Tile';
-import Draw from 'ol/interaction/Draw.js';
 import {Zoom, Rotate, Attribution, ZoomSlider, MousePosition, ScaleLine, OverviewMap} from 'ol/control';
-import {MVT} from 'ol/format';
+import {Polygon} from 'ol/geom';
+import TileLayer from 'ol/layer/Tile';
+import {Sphere} from 'ol/sphere.js';
+import Draw from 'ol/interaction/Draw.js';
+import {MVT, GeoJSON} from 'ol/format';
 import {Vector as VectorLayer} from 'ol/layer.js';
 import {OSM, Vector as VectorSource} from 'ol/source.js';
 import {fromLonLat} from 'ol/proj.js';
@@ -20,7 +22,8 @@ class MapViewPort extends Component {
 
         this.state = {
             map: null,
-            view: null
+            view: null,
+            baseLayer: null
         };
     }
 
@@ -35,8 +38,10 @@ class MapViewPort extends Component {
         console.log(JSON.stringify(fromLonLat(sanjose)));
         var mapManager = this.createMap('map', sanjose, 18, 23);
         this.initMap(mapManager);
+        this.setState(mapManager);
     }
 
+    // MAIN: Render the entire map
     createMap(target, latLonArray, zoomLevel, maxZoom){
         const view = new View({
             // center: Projection.fromLonLat([-87.61694, 41.86625]),
@@ -61,6 +66,29 @@ class MapViewPort extends Component {
         return {map, view};
     }
 
+    createBaseLayer() {
+        // Layer: internal OpenStreetMap
+        var raster = new TileLayer({
+            source: new OSM()
+        });
+
+        return raster;
+    }
+    // edit, pick, delete obje
+    showBaseLayer(mapManager, isVisible = true) {
+        if (!this.state.baseLayer) {
+            var raster = this.createBaseLayer();
+            mapManager.map.addLayer(raster);
+            this.setState({
+                map: this.state.map,
+                view: this.state.view,
+                baseLayer: raster
+            });
+        } else {
+            this.state.baseLayer.setVisibility(isVisible);
+        }
+    }
+
     moveViewport(view, newLatLon, duration = 2000) {
         view.animate({
             center: fromLonLat(newLatLon),
@@ -80,14 +108,12 @@ class MapViewPort extends Component {
                 url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             })
         });
-        mapManager.map.addLayer(openStreetMapLayer);
+        // mapManager.map.addLayer(openStreetMapLayer);
 
-        // Layer: A custom map
-        // const aMapLayer = new TileLayer({
-        //     source: new XYZ({
-        //         url: 'http://ec2-52-27-92-51.us-west-2.compute.amazonaws.com:5002/{z}/{x}/{y}.png'
-        //     })
-        // });
+        // Add base layer
+        this.showBaseLayer(mapManager);
+
+        // Layer: A custom map (TMS with XYZ source)
         const aMapLayer = new TileLayer({
             // style: simpleStyle,
             source: new TileImage({
@@ -98,12 +124,6 @@ class MapViewPort extends Component {
             })
         });
         mapManager.map.addLayer(aMapLayer);
-    
-        // Layer: internal OpenStreetMap
-        var raster = new TileLayer({
-            source: new OSM()
-        });
-        // mapManager.map.addLayer(raster);
     
         // https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=<your access token here>'
         // Layer: Mapbox
@@ -121,41 +141,66 @@ class MapViewPort extends Component {
         });
         mapManager.map.addLayer(vector);
     
-        // MAIN: Render the entire map
         var typeSelect = document.getElementById('type');
+        var data = [];
         var draw; // global so we can remove it later
+
         function addInteraction() {
             var value = typeSelect.value;
             if (value !== 'None') {
                 draw = new Draw({
-                source: source,
-                type: typeSelect.value
+                    source: source,
+                    type: typeSelect.value
+                });
+                draw.on('drawend', function( evt ){
+                    var geometry = evt.feature.getGeometry();
+                    if (value === 'Circle') {
+                        var radius = geometry.getRadius();
+                        var center = geometry.getCenter();
+                        // .... your code
+                        data.push([radius, center]);
+                    } else {
+                        var coords = geometry.getCoordinates();
+                        data.push(coords);
+                    }                    
                 });
                 mapManager.map.addInteraction(draw);
             }
         }
-    
-        /**
-         * Handle change event.
-         */
+
+        /** Handle change event.**/
         typeSelect.onchange = function() {
             mapManager.map.removeInteraction(draw);
             addInteraction();
         };
-        addInteraction();
 
-        /**
-         * Handle Draw button event
-         */
+        /** Handle Draw button event **/
         document.getElementById('btn-draw').onclick = () => {
-            this.moveViewport(mapManager.view, [-121.9236057, 37.261241], 2000);
+            mapManager.map.removeInteraction(draw);
+            addInteraction();
         }
 
-        /**
-         * Handle Move button event
-         */
-        document.getElementById('btn-draw').onclick = () => {
-            this.moveViewport(mapManager.view, [-121.9236057, 37.261241], 2000);
+        /** Handle Move button event **/
+        document.getElementById('btn-move').onclick = () => {
+            this.moveViewport(mapManager.view, [-87.61694, 41.86625], 2000);
+        }
+
+        /** Handle Save  button event **/
+        document.getElementById('btn-save').onclick = () => {
+            // Get the array of features
+            var features = vector.getSource().getFeatures();
+            
+            var writer = new GeoJSON();
+            var geojsonStr = writer.writeFeatures(vector.getSource().getFeatures());
+
+            // Go through this array and get coordinates of their geometry.
+            features.forEach(function(feature) {
+                console.log(feature.getGeometry().getCoordinates());
+            });
+
+            // Special
+            console.log(data);
+            alert('Saved. Please check console log for details.');
         }
     }
 }
